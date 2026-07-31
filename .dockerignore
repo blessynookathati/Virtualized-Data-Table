@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+npm-debug.log
+README.md
+tests
+jest.config.ts
+tsconfig.jest.json
+jest.setup.ts
+docker-compose.yml
+Dockerfile
+.dockerignore
