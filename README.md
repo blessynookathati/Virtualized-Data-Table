@@ -1,142 +1,446 @@
-# High-Performance Virtualized Data Table
+# 🚀 High-Performance Virtualized Data Table
 
-A responsive, high-performance data table built with **React**, **TypeScript**, and **Vite** capable of displaying and managing large datasets (12,000+ rows) efficiently using **TanStack Virtual** and **Zustand**. 
+> A production-ready React/Next.js application capable of efficiently rendering **10,000+ records** using **TanStack Virtual** with advanced state management, filtering, sorting, responsive design, accessibility, testing, and Docker support.
+---
 
-This project simulates a real-world enterprise dashboard containing interactive sorting, filtering, accessibility (a11y) support, and containerization.
+# 📌 Overview
+
+Modern enterprise applications often display thousands of records simultaneously. Rendering all records directly causes:
+
+- Slow rendering
+- High memory consumption
+- Browser lag
+- Poor scrolling performance
+
+This project solves these challenges by implementing **DOM Virtualization** using **TanStack Virtual**, rendering only the visible rows while maintaining smooth 60 FPS scrolling.
 
 ---
 
-## 🛠️ Tech Stack
+# 🎯 Project Objective
 
-* **Core**: React 19, TypeScript 6, Vite 8
-* **Virtualization**: `@tanstack/react-virtual` (v3)
-* **State Management**: `Zustand` (v5)
-* **Mock Data**: `@faker-js/faker` (v10)
-* **Styling**: Vanilla CSS (Modern Glassmorphic Dark Theme)
-* **Testing**: Jest, React Testing Library, ts-jest, jest-environment-jsdom
-* **Deployment & Containerization**: Docker, Docker Compose, Nginx (Alpine)
+Build a highly scalable virtualized data table that can:
 
----
-
-## 🚀 Key Features
-
-1. **DOM Virtualization (Windowing)**: Renders only the visible subset of rows plus a small pre-fetch buffer (~20-30 rows) instead of creating 12,000+ DOM nodes, guaranteeing a consistent 60 FPS scrolling experience.
-2. **Atomic Client-Side State**: Centralized **Zustand** store managing data sorting, filtering, initialization, and loading flags. It avoids context-based prop-drilling, isolating render cycles.
-3. **Smart Debounced Inputs**: The Name text filter is debounced at 350ms, deferring heavy array searches and state dispatches until typing pauses to keep the input interface smooth.
-4. **Ascending ➔ Descending ➔ Unsorted Sort Cycle**: Clicking column headers cycles the sort configuration (handles alphabetical text, date formats, and numerical values correctly), complete with visual arrow indicators.
-5. **Accessibility (a11y) Compliance**: 
-   * Fully navigable using only a keyboard (Tab to focus column headers, Enter/Space to sort).
-   * Screen-reader semantic roles defined (`role="table"`, `role="rowgroup"`, `role="row"`, `role="columnheader"`, `role="cell"`).
-   * Dynamic ARIA attributes indicating state change (`aria-sort`, `aria-label`).
-6. **Premium Responsive Theme**: Out-of-the-box CSS dark theme featuring glassmorphic overlays, custom scrollbars, and fluid media queries (hides secondary columns and enables horizontal scroll on mobile).
-7. **Robust Error Boundary**: Employs React Error Boundaries to catch layout or rendering exceptions, preventing complete application crashes.
+- Display **10,000+ records**
+- Filter data instantly
+- Sort columns efficiently
+- Maintain excellent performance
+- Provide responsive UI
+- Follow accessibility standards
+- Support automated testing
+- Be deployment-ready with Docker
 
 ---
 
-## 📂 Project Structure
+# ✨ Features
 
-```text
-virtualized-data-table/
-├── .github/                   # GitHub action settings (if any)
-├── public/
-│   ├── favicon.svg            # Tab icon
-│   └── icons.svg              # Vector assets
-├── src/
-│   ├── assets/                # Logos and mock images
-│   ├── components/
-│   │   ├── DataTable/         # Core virtual table & Row components
-│   │   │   └── index.tsx
-│   │   ├── TableControls/     # Filter and resetting panels
-│   │   │   └── index.tsx
-│   │   └── ErrorBoundary/     # React error boundary component
-│   │       └── index.tsx
-│   ├── store/
-│   │   └── dataTableStore.ts  # Zustand global store configuration
-│   ├── utils/
-│   │   └── generateMockData.ts # Seeded Faker.js data generator
-│   ├── App.tsx                # Application shell & initialization
-│   ├── index.css              # Custom dark-theme glassmorphism styles
-│   └── main.tsx               # DOM entrypoint
-├── tests/
-│   ├── DataTable.test.tsx     # Component integration tests
-│   └── dataTableStore.test.ts # Zustand state logic unit tests
-├── .dockerignore
-├── .env.example
-├── .gitignore
-├── docker-compose.yml
+## 📊 Data Handling
+
+- Generate 10,000+ mock records using Faker.js
+- UUID-based row identification
+- Realistic sample dataset
+
+---
+
+## ⚡ Virtualization
+
+- Powered by TanStack Virtual
+- Renders only visible rows
+- Constant DOM size
+- Smooth scrolling
+- High performance even with huge datasets
+
+---
+
+## 🔍 Filtering
+
+Filter records by:
+
+- Name
+- Category
+
+Features:
+
+- Debounced search
+- Instant updates
+- Case-insensitive filtering
+
+---
+
+## 📈 Sorting
+
+Supports:
+
+- Ascending
+- Descending
+- Reset state
+
+Works for:
+
+- Strings
+- Numbers
+- Dates
+
+---
+
+## 📱 Responsive Design
+
+Optimized for:
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile
+
+Responsive Features:
+
+- Horizontal scrolling
+- Flexible layout
+- Adaptive controls
+
+---
+
+## ♿ Accessibility
+
+Supports:
+
+- Keyboard navigation
+- Screen readers
+- aria-label
+- aria-sort
+- Semantic table roles
+- Focus management
+
+---
+
+## ⚙️ State Management
+
+Centralized global state using **Zustand**
+
+Manages:
+
+- Original Data
+- Display Data
+- Filters
+- Sorting
+- Loading State
+- Error State
+
+---
+
+## 🧪 Testing
+
+Includes:
+
+- Unit Tests
+- Integration Tests
+
+Using:
+
+- Jest
+- React Testing Library
+
+---
+
+## 🐳 Docker Support
+
+Includes:
+
+- Dockerfile
+- Docker Compose
+- Production build
+
+---
+
+# 🏗 Architecture
+
+```
+                User
+                  │
+                  ▼
+        Filter / Sort Controls
+                  │
+                  ▼
+          Zustand Store
+                  │
+        Derived Display Data
+                  │
+                  ▼
+        TanStack Virtual
+                  │
+          Visible Row Slice
+                  │
+                  ▼
+       Virtualized Data Table
+```
+
+---
+
+# 🔄 Application Workflow
+
+```
+Application Starts
+        │
+        ▼
+Generate 10,000 Mock Records
+        │
+        ▼
+Store Data in Zustand
+        │
+        ▼
+Render Virtualized Table
+        │
+        ▼
+User Scrolls
+        │
+        ▼
+TanStack Calculates Visible Rows
+        │
+        ▼
+Only Visible Rows Rendered
+        │
+        ▼
+User Filters / Sorts Data
+        │
+        ▼
+Store Updates
+        │
+        ▼
+Display Data Recalculated
+        │
+        ▼
+Virtual Table Re-renders Visible Rows
+```
+
+---
+
+# 📂 Folder Structure
+
+```
+project-root
+│
+├── public
+│
+├── src
+│   ├── components
+│   │   ├── DataTable
+│   │   ├── TableControls
+│   │   ├── VirtualRow
+│   │   ├── Loader
+│   │   ├── EmptyState
+│   │   └── ErrorBoundary
+│   │
+│   ├── store
+│   │   └── dataTableStore.ts
+│   │
+│   ├── utils
+│   │   └── generateMockData.ts
+│   │
+│   ├── hooks
+│   │   └── useDebounce.ts
+│   │
+│   ├── types
+│   │   └── DataRow.ts
+│   │
+│   ├── styles
+│   │
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── tests
+│   ├── DataTable.test.tsx
+│   └── Store.test.ts
+│
 ├── Dockerfile
-├── jest.config.ts
-├── jest.setup.ts
-├── nginx.conf                 # SPA static distribution routing
+├── docker-compose.yml
 ├── package.json
-└── tsconfig.jest.json         # Dedicated Jest compiler options
+├── tsconfig.json
+└── README.md
 ```
 
 ---
 
-## ⚙️ Workflow Architecture
+# 🛠 Tech Stack
 
-```mermaid
-graph TD
-  UI[User Interaction / Controls] -->|1. Triggers Action| Store(Zustand Global Store)
-  Store -->|2. Runs Filter & Sort| Data[12,000+ Raw Rows Array]
-  Data -->|3. Updates| Display[displayData Slice]
-  Display -->|4. Feeds| Virtual[TanStack Virtual Engine]
-  Virtual -->|5. Slices & Positions| View[Viewport DOM Elements]
-```
+## Frontend
 
-1. **Data Hydration**: On mount, `App.tsx` triggers seeded generation of 12,000 rows and commits them to the Zustand store.
-2. **Filtering/Sorting**: Text input changes and column clicks mutate store filters. The store computes the subset inside a `setTimeout` to allow the React UI to display a processing overlay.
-3. **Viewport Calculations**: TanStack Virtual observes scroll offsets of the scroll container, fetching corresponding indexes from the stored `displayData` and positioning them using absolute CSS `translateY` transforms.
+- React
+- Next.js / Vite
+- TypeScript
 
----
+## Styling
 
-## 💻 Local Development
+- CSS
+- Tailwind CSS
 
-### Prerequisites
-* [Node.js](https://nodejs.org/) (v20+ recommended)
-* NPM
+## State Management
 
-### Setup & Run
-1. Install project dependencies:
-   ```bash
-   npm install
-   ```
-2. Launch local Vite development server:
-   ```bash
-   npm run dev
-   ```
-   *Open [http://localhost:5173](http://localhost:5173) in your browser.*
+- Zustand
 
-3. Build production bundles:
-   ```bash
-   npm run build
-   ```
+## Virtualization
+
+- TanStack Virtual
+
+## Mock Data
+
+- Faker.js
+
+## Testing
+
+- Jest
+- React Testing Library
+
+## Containerization
+
+- Docker
+- Docker Compose
 
 ---
 
-## 🧪 Testing Suite
+# 🚀 Installation
 
-Tests are configured using Jest and ts-jest. Run the suite to verify logic stability:
+Clone repository
+
 ```bash
-npm run test
+git clone https://github.com/yourusername/virtualized-data-table.git
 ```
 
-*Includes unit tests for search/filter operations and sort-cycling, as well as integration tests for keyboard actions and accessibility attributes.*
+Move into project
+
+```bash
+cd virtualized-data-table
+```
+
+Install packages
+
+```bash
+npm install
+```
+
+Run locally
+
+```bash
+npm run dev
+```
+
+Production build
+
+```bash
+npm run build
+```
 
 ---
 
-## 🐳 Docker Deployment
+# 🐳 Docker
 
-The application is fully containerized. A multi-stage build creates the bundle and serves it using Nginx Alpine.
+Build
 
-1. Build and run containers in the background:
-   ```bash
-   docker-compose up --build -d
-   ```
-2. Access the application on [http://localhost:3000](http://localhost:3000).
+```bash
+docker-compose build
+```
 
-3. Tear down containers:
-   ```bash
-   docker-compose down
-   ```
+Run
+
+```bash
+docker-compose up
+```
+
+Stop
+
+```bash
+docker-compose down
+```
+
+---
+
+# 🧪 Testing
+
+Run all tests
+
+```bash
+npm test
+```
+
+Coverage
+
+```bash
+npm run test:coverage
+```
+
+---
+
+# ⚡ Performance Optimizations
+
+- DOM Virtualization
+- React.memo
+- useMemo
+- Debounced Filtering
+- Zustand Selectors
+- Minimal Re-rendering
+- Efficient State Updates
+- Lazy Rendering
+
+---
+
+# ♿ Accessibility
+
+✔ Keyboard Navigation
+
+✔ Screen Reader Support
+
+✔ aria-sort
+
+✔ aria-label
+
+✔ Semantic Roles
+
+✔ Focus Management
+
+---
+
+# 📊 Performance Comparison
+
+| Traditional Table | Virtualized Table |
+|-------------------|-------------------|
+| 10,000 DOM Nodes | 30–50 DOM Nodes |
+| Slow Rendering | Smooth Rendering |
+| High Memory Usage | Low Memory Usage |
+| Laggy Scrolling | 60 FPS Scrolling |
+
+---
+
+# 🔮 Future Improvements
+
+- Server-side Pagination
+- Infinite Scrolling
+- Column Resizing
+- Column Pinning
+- CSV Export
+- Dark Mode
+- Row Selection
+- Drag & Drop Columns
+- Multi-column Sorting
+- Backend Integration
+
+---
+
+# 📚 Learning Outcomes
+
+This project demonstrates:
+
+- DOM Virtualization
+- Enterprise React Architecture
+- Performance Optimization
+- Global State Management
+- Accessibility
+- Responsive Design
+- Testing Strategies
+- Docker Deployment
+- Clean Code Practices
+
+---
+
+# 👨‍💻 Author
+
+**Blessy Nookathati**
+
+# ⭐ If you found this project helpful, don't forget to give it a Star!
